@@ -1,6 +1,7 @@
 package com.leezer.truman;
 
 import com.harium.storage.kdtree.KDTree;
+import com.harium.storage.kdtree.exception.KeyDuplicateException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -39,7 +40,6 @@ public class Trumanizer {
             for (int y = 0; y < gridHeight; y++){
                 BufferedImage subImage = base.getSubimage(x*tileWidth,y*tileHeight,tileWidth,tileHeight);
                 double[] rgb = getRGB(subImage);
-                //TODO we need to shrink this image
                 final File nearestNeighbor = images.nearest(rgb);
                 final BufferedImage shrunkImage = resizeImage(ImageIO.read(nearestNeighbor),tileWidth,tileHeight);
                 // Write image to output
@@ -67,8 +67,9 @@ public class Trumanizer {
         final KDTree<File> index = new KDTree<>(3);
         Files.walk(Paths.get(imageDir.getAbsolutePath()))
                 .filter(Files::isRegularFile)
-                .filter(f -> f.endsWith("jpg"))
+                .filter(f -> f.toString().toLowerCase().endsWith("jpg"))
                 .forEach( path -> addToTree(index,path));
+        System.out.println("Built index of "+index.size()+" images");
         return index;
     }
 
@@ -85,7 +86,7 @@ public class Trumanizer {
             System.out.println("Blue Color value = "+ rgb[2]);
 
             index.insert(rgb,imageFile);
-        } catch (IOException e) {
+        } catch (IOException | KeyDuplicateException e) {
             e.printStackTrace();
         }
 
