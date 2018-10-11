@@ -10,9 +10,9 @@ public class Main {
 
     public static void main(String args[]){
         try {
-            Trumanizer trumanizer = new Trumanizer(new File("D:\\Users\\Jason\\Downloads\\IMG_5285.jpg"),new File("D:\\Users\\Jason\\Pictures\\2018-09"),30,30);
+            Trumanizer trumanizer = new Trumanizer(new File(""),new File(""),60,80);
             BufferedImage bu = trumanizer.trumanize();
-            File outputfile = new File("D:\\Users\\Jason\\Downloads\\image.jpg");
+            File outputfile = new File("");
             ImageIO.write(bu, "jpg", outputfile);
         } catch (IOException e) {
             e.printStackTrace();
