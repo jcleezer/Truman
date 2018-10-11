@@ -4,14 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.harium.storage.kdtree.KDTree;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -82,17 +80,11 @@ public class Trumanizer {
         return index;
     }
     private void removeImage(File key) {
-//        try {
-//            images.delete(key,true);
-//        }catch (RuntimeException e){
-//            e.printStackTrace();
-//        }
         images.remove(key.getAbsolutePath());
     }
 
 
     private static BufferedImage resizeImage(BufferedImage originalImage, int width, int height){
-        System.out.println("Resizing");
         BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, width,height, null);
@@ -103,7 +95,6 @@ public class Trumanizer {
 
     private Map<String,RGB> buildImageIndex(File imageDir) throws IOException {
         final Gson gson = new Gson();
-        //final KDTree<File> index = new KDTree<>(3);
         final Map<String,RGB> values = new HashMap<>();
         final File persisted = new File(imageDir,"truman.json");
         if (persisted.exists()){
@@ -121,7 +112,6 @@ public class Trumanizer {
 
         //Persist
         FileUtils.writeStringToFile(persisted, gson.toJson(values));
-        //IOUtils.write(gson.toJson(values),new FileWriter(persisted));
         return values;
     }
 
@@ -137,13 +127,7 @@ public class Trumanizer {
             BufferedImage image = ImageIO.read(imageFile);
             if (image != null) {
                 RGB rgb = getRGB(image);
-
                 System.out.println("Processing " + path.toFile().getName());
-
-//            System.out.println("Red Color value = "+ rgb.getRed());
-//            System.out.println("Green Color value = "+ rgb.getGreen());
-//            System.out.println("Blue Color value = "+ rgb.getBlue());
-
                 values.put(path.toString(), rgb);
             }
         } catch (IOException e) {
