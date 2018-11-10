@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String args[]){
         try {
-            Trumanizer trumanizer = new Trumanizer(new File(""),new File(""),60,80);
+            Trumanizer trumanizer = new Trumanizer(new File(""),new File(""),20,30,4);
             BufferedImage bu = trumanizer.trumanize();
             File outputfile = new File("");
             ImageIO.write(bu, "jpg", outputfile);
